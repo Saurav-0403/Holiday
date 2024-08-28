@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .holiday {
+            background-color: #ffcccc;
+        }
+        .month {
+            page-break-after: always;
+        }
+    </style>
+</head>
+<body>
+    <h1>Holiday Calendar</h1>
+
+    <div id="calendar"></div>
+
+    <script>
+        // Define your holidays here in YYYY-MM-DD format
+        const holidays = {
+	    "2024-09-18": "Personal Leave",
+	    "2024-09-19": "Personal Leave",
+            "2024-10-08": "Personal Leave",
+	    "2024-10-09": "Personal Leave",
+            "2024-10-10": "Personal Leave",
+	    "2024-11-03": "Personal Leave",
+	    "2024-11-04": "Personal Leave",
+	    "2024-11-05": "Personal Leave",
+	    "2024-11-06": "Personal Leave",
+	    "2024-11-07": "Personal Leave",
+	    "2024-11-10": "Personal Leave",
+	    "2024-11-11": "Personal Leave",
+	    "2024-11-12": "Personal Leave",
+	    "2024-11-13": "Personal Leave",
+	    "2024-11-14": "Personal Leave",
+ 	    "2024-12-22": "Personal Leave",
+	    "2024-12-23": "Personal Leave",
+	    "2024-12-23": "Personal Leave",
+	    "2024-12-25": "Personal Leave",
+	    "2024-12-26": "Personal Leave",
+	    "2024-12-29": "Personal Leave",
+	    "2024-12-30": "Personal Leave"
+        };
+
+        // Generate the calendar
+        function generateCalendar(year) {
+            const calendarDiv = document.getElementById('calendar');
+            for (let month = 8; month < 12; month++) {
+                calendarDiv.innerHTML += generateMonthTable(year, month);
+            }
+        }
+
+        // Generate HTML table for a month
+        function generateMonthTable(year, month) {
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"];
+            const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            let date = new Date(year, month, 1);
+            let html = `<div class="month"><h2>${monthNames[month]} ${year}</h2>`;
+            html += "<table><tr>";
+
+            // Add day headers
+            for (let day of daysOfWeek) {
+                html += `<th>${day}</th>`;
+            }
+            html += "</tr><tr>";
+
+            // Fill in the days
+            for (let i = 0; i < date.getDay(); i++) {
+                html += "<td></td>";
+            }
+
+            while (date.getMonth() === month) {
+                const dateString = date.toISOString().split('T')[0];
+                if (holidays[dateString]) {
+                    html += `<td class="holiday" title="${holidays[dateString]}">${date.getDate()}</td>`;
+                } else {
+                    html += `<td>${date.getDate()}</td>`;
+                }
+
+                if (date.getDay() === 6) {
+                    html += "</tr><tr>";
+                }
+
+                date.setDate(date.getDate() + 1);
+            }
+
+            html += "</tr></table></div>";
+            return html;
+        }
+
+        // Call the function to generate the calendar for the current year
+        generateCalendar(2024);
+    </script>
+</body>
+</html>
